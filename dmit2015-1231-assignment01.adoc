@@ -58,7 +58,7 @@ poml.xml
     <version>2.0.1</version>
 </dependency>
 
-<!-- Dependencies for ALL specifications from Eclipse Microprofile  -->
+<!-- Eclipse Microprofile is for build Microservices  -->
 <dependency>
     <groupId>org.eclipse.microprofile</groupId>
     <artifactId>microprofile</artifactId>
@@ -67,7 +67,7 @@ poml.xml
     <scope>provided</scope>
 </dependency>
 
-<!-- For generating getters/setters -->
+<!-- Lombok is for generating getters/setters -->
 <dependency>
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
@@ -100,21 +100,6 @@ poml.xml
 poml.xml
 [source, xml]
 ----
-<!-- Plugin to run unit tests-->
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-surefire-plugin</artifactId>
-    <version>3.1.2</version>
-</plugin>
-
-<!-- Plugin to run functional tests -->
-<!--  mvn failsafe:integration-test -->
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-failsafe-plugin</artifactId>
-    <version>3.1.2</version>
-</plugin>
-
 <!-- Plugin to build a bootable JAR for WildFly -->
 <plugin>
     <!-- https://docs.wildfly.org/bootablejar/#wildfly_jar_dev_mode -->
@@ -148,8 +133,6 @@ poml.xml
         </jvmArguments>
         <timeout>120</timeout>
 
-        <!-- Build a bootable JAR for cloud environment. -->
-        <cloud />
     </configuration>
     <executions>
         <execution>
@@ -204,6 +187,8 @@ You can display image from a Faces page using the PrimeFaces `p:graphicImage` ta
 Required form field validation is expected for at minimum one of the form fields.
 You can use the file template *DMIT2015 Firebase REST API Faces CRUD Create View* to create the Faces backing bean class.
 You can use the file template *DMIT2015 Faces CRUD Create Page* to create the Faces web page.
+Add a button to generate data for at minium one of fields using the *Data Faker* library.
+Add a button to clear all form fields.
 
 . Create and code a Faces web page and its supporting Java classes to allow the user to view data in your Firebase Realtime Database.
 You can use the file template *DMIT2015 Firebase REST API Faces CRUD List View* to create the Faces backing bean class.
@@ -222,6 +207,8 @@ You can use the file template *DMIT2015 Firebase REST API Faces CRUD Details Vie
 You can use the file template *DMIT2015 Faces CRUD Details Page* to create the Faces web page.
 
 . Modify `src/main/webapp/WEB-INF/faces-templates/layout.xhtml` and add menuitem to the Faces web pages you created.
+
+. Create a bootable JAR file of your assignment and upload the JAR file to Moodle. Do 
 
 == CODING REQUIREMENTS
 * Firebase Realtime Database must at minimum *three* document(record) with meaningful data (*10%* deduction if you do not follow this requirement)
@@ -242,8 +229,12 @@ You can use the file template *DMIT2015 Faces CRUD Details Page* to create the F
 
 | Demonstrate functional Faces web page to add new data to the Firebase Realtime Database.
 Use the Firebase Console to verify data has been added to Firebase Realtime Database.
-Demonstrate form field input validation.
-| 2
+
+Demonstrate form field input validation and the button to clear all form fields.
+
+Demonstrate generating data for at least one of the form fields using DataFaker.
+
+| 3
 
 | Demonstrate functional Faces web page with list of all data in the Firebase Realtime Database.
 Use the Firebase Console to verify Faces web page content matches data in Firebase Realtime Database.
@@ -260,6 +251,10 @@ Use the Firebase Console to verify data has been deleted in Firebase Realtime Da
 | Demonstrate functional Faces web page for view all fields of the selected data in the Firebase Realtime Database.
 | 1
 
+| Submitted bootable JAR file runs without errors and all pages are functional.
+| 1
+
+
 |===
 
 
@@ -273,6 +268,7 @@ Use the Firebase Console to verify data has been deleted in Firebase Realtime Da
 * https://github.com/eclipse/microprofile-rest-client[Rest Client for MicroProfile GitHub]
 * https://download.eclipse.org/microprofile/microprofile-rest-client-3.0/microprofile-rest-client-spec-3.0.html[Rest Client for MicroProfile Specification]
 * https://www.primefaces.org/showcase[PrimeFaces Showcase]
+* https://www.datafaker.net[Datafaker]
 * https://jakarta.ee/specifications/faces/4.0/jakarta-faces-4.0.html[Jakarta Server Faces Specification Documeent]
 * https://eclipse-ee4j.github.io/jakartaee-tutorial/#introduction-to-facelets[Introduction to Facelets]
 * https://eclipse-ee4j.github.io/jakartaee-tutorial/#expression-language[Expression Language]
