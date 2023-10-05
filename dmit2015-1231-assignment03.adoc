@@ -237,9 +237,7 @@ poml.xml
 . In the Java package `dmit2015.config`, create a new *DMIT2015 Jakarta Persistence ApplicationConfig* file 
 then configure the JTA data source definition for the *HR* Oracle Database schema.
 
-. Navigate to the `src/main/resources/META-INF` folder and delete the existing *persistence.xml* file. In the `src/main/resources/META-INF` create a new *DMIT2015 Jakarta Persistence JTA persistence.xml* file then configure the persistence unit for the *HR* Oracle Database schema.
-
-. In IntelliJ, open the *Database* window and add a new Data Source to the Oracle Database HR schema.
+. Navigate to the `src/main/resources/META-INF` folder and delete the existing *persistence.xml* file. In the `src/main/resources/META-INF` create a new *DMIT2015 Jakarta Persistence JTA persistence.xml* file then configure the persistence unit for the database (Oracle or Sql Server) you want to use.
 
 . Commit and push your project to your GitHub repository.
 
