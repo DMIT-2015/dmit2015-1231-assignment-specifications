@@ -5,6 +5,7 @@
 1. [Assignment 1](./dmit2015-1231-assignment01.adoc)
 1. [Assignment 2](./dmit2015-1231-assignment02.adoc)
 1. [Assignment 3](./dmit2015-1231-assignment03.adoc)
+1. [Assignment 4](./dmit2015-1231-assignment04.adoc)
 
 ## Submission of assignment
 
