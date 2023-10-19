@@ -128,6 +128,7 @@ quit
 . The team lead member will clone the git repository to the *~/IdeaProjects/dmit2015-1231-assignment04* folder from IntelliJ IDEA.
 
 == PROJECT SETUP
+. The team lead will create the project.
 . Open IntelliJ IDEA and create a new project using the *Jakarta EE* module and change following settings:
  .. Name: `dmit2015-assignment04-yourTeamName`
  .. Location: `~/IdeaProjects/dmit2015-1223-assignment04`
@@ -367,6 +368,8 @@ poml.xml
 
 . Commit and push your project to your GitHub repository.
 
+. The other team members can now clone the team repository.
+
 == REQUIREMENTS
 . From the Database window in IntelliJ, navigate to the tables folder of the HR schema. Right-mouse click on tables then select *Generate Persistence Mapping*
 .. Set the *Package* field to `dmit2015.entity`
@@ -408,8 +411,12 @@ poml.xml
 | countryId
 
 |===
+. Run the maven plugin:goal *wildfly-jar:dev-watch* to verify that your project is configured correctly and can be deployed.
+
+. Each team member create a new Git branch to work on their entity.
+
 . The generated entity classes does not include bean validation annotations. For each entity class add required field validation for all fields mapped to non-nullable column using `@NotBlank` for string fields and `@NotNull` for non-string fields.
-. In the Java package `dmit2015.persistence`, use the *DMIT2015 Jakarta Persistence CRUD Repository* file template to create Jakarta Persistence for two of the entities (Location, Department, Employee, Job).
+. In the Java package `dmit2015.persistence`, use the *DMIT2015 Jakarta Persistence CRUD Repository* file template to create Jakarta Persistence for the entities (Location, Department, Employee, Job).
 .. Complete the TODO in the `update` method. Remove the TODO comments after you completed the TODO task.
 .. Add code to the `add` method to generate a new primary key value and assign it to the new entity
 .. Add code to the `delete` method to throw a RuntimeException if there child records associated with this entity
@@ -425,6 +432,8 @@ poml.xml
 . Create a JUnit Test Case class to test the functionality of each web pages using Selenium WebDriver. 
 
 . OPTIONAL CHALLENGE: In your entity list page use the http://www.primefaces.org:8080/showcase/ui/data/dataexporter/basic.xhtml?jfwid=00ae4[PrimeFaces DataExporter] component to add the option to export the data in the datatable to CSV, XLSX, or PDF file format.
+
+. Merge each team members Git branch into the main branch.
 
 == CODING REQUIREMENTS
 * Java package names must be all lower case (*10%* deduction if you do not follow this requirement)
