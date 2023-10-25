@@ -415,14 +415,16 @@ poml.xml
 . Each team member create a new Git branch with their name to work on their assigned entity.
 
 . The generated entity classes does not include bean validation annotations. For each entity class add required field validation for all fields mapped to non-nullable column using `@NotBlank` for string fields and `@NotNull` for non-string fields.
-. In the Java package `dmit2015.persistence`, use the *DMIT2015 Jakarta Persistence CRUD Repository* file template to create Jakarta Persistence for the entities (Location, Department, Employee, Job).
-.. Complete the TODO in the `update` method. Remove the TODO comments after you completed the TODO task.
+. In the Java package `dmit2015.persistence`, 
+you use either the *DMIT2015 Jakarta Persistence CRUD Repository* file template or the *DMIT2015 Jakarta Persistence Entity Repository* file template to create Jakarta Persistence for the entities (Location, Department, Employee, Job).
+.. If you are using the *DMIT2015 Jakarta Persistence CRUD Repository* file template, complete the TODO in the `update` method. 
+Remove the TODO comments after you completed the TODO task.
 .. Add code to the `add` method to generate a new primary key value and assign it to the new entity
 .. Add code to the `delete` method to throw a RuntimeException if there child records associated with this entity
 
 . Create and code the Faces web pages and its supporting Java classes to perform CRUD operations on the remaining entities.
 
-. Modify `src/main/webapp/WEB-INF/faces-templates/layout.xhtml` and add links to the web pages to *List* data and *Create* data.
+. Modify `src/main/webapp/WEB-INF/faces-templates/layout.xhtml` and add links to the web pages to *List* data and *Create* data for each entity.
 
 . Run the maven plugin:goal *wildfly-jar:dev-watch* and verify that your project is Deployed.
 
@@ -438,8 +440,10 @@ poml.xml
 * Java package names must be all lower case (*10%* deduction if you do not follow this requirement)
 * Use camelCase for Java variables and method names (*10%* deduction if you do not follow this requirement)
 * Use TitleCase for Java class names (*10%* deduction if you do not follow this requirement)
-* All Java source files must include javadoc comments before the class with a description of the class, `@author` with your full name, and `@version` with the last date modifed. (*10%* deduction if you do not follow this requirement)
-* Source code uses variables names and method names copied from another project and not related to the problem in this assignment. For example using the terms Movie and Todo. (*10%* deduction if you do not follow this requirement)
+* All Java source files must include javadoc comments before the class with a description of the class, `@author` with your full name, and `@version` with the last date modifed. 
+(*10%* deduction if you do not follow this requirement)
+* Source code uses variables names and method names copied from another project and not related to the problem in this assignment. 
+For example using the terms Movie and Todo. (*10%* deduction if you do not follow this requirement)
 
 == MARKING GUIDE
 
