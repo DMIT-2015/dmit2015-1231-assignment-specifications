@@ -131,7 +131,7 @@ quit
 . The team lead will create the project.
 . Open IntelliJ IDEA and create a new project using the *Jakarta EE* module and change following settings:
  .. Name: `dmit2015-assignment04-yourTeamName`
- .. Location: `~/IdeaProjects/dmit2015-1223-assignment04`
+ .. Location: `~/IdeaProjects/dmit2015-1231-assignment04`
  .. Template: `Web application`
  .. Application server: `<No appliation server>`  
  .. Group: `dmit2015`
