@@ -98,7 +98,7 @@ Executive
 |===
 +
 
-. Configure the project (`ApplicationConfig.java`, `customLogin.xhtml`, `Login.java`, `Logout.java`) to use a Custom Form Authentication mechanism.
+. Configure the project (`ApplicationConfig.java`, `OidcConfig.java`, `OidcLogout.java`) to use OpenIDConnect Authentication mechanism.
 
 . Configure the project (`ApplicationConfig.java`) to use a LDAP identity store to the Windows 2019 Server VM.
 
@@ -116,7 +116,8 @@ Executive
 
 . Modify `BillPayment.java` and add a property for the authenticated `username`.
 
-. Using either an CDI Interceptor or modify the `BillPaymentRepository.java` method `create()` directly to set the `username` of the BillPayment before it is persisted.
+. Using either an CDI Interceptor or modify the `BillPaymentRepository.java` method `create()` 
+directly to set the `username` of the BillPayment before it is persisted.
 
 . Modify `BillPaymentRepository.java` method `findAll()` to work as follows:
 .. If the caller is anonymous (non-authenticated) user then throw an `RuntimeException`.
