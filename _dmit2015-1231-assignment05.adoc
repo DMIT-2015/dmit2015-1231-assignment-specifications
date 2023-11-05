@@ -1,0 +1,375 @@
+= DMIT2015 Assignment 5 - Jakarta EE Security with a Multiuser Entity System
+:source-highlighter: rouge
+:max-width: 90%
+
+== OBJECTIVE
+Upon completion of this assignment, you will have demonstrated the ability to:
+
+- Secure a Jakarta EE appplication using the security features provided by the Jakarta EE container
+- Apply container-managed authentication, authorization, and data protection.
+- Create and use custom error pages for common HTTP error codes.
+- Create a multiuser entity system where each user can manage their own entity.
+
+== PROBLEM DESCRIPTION
+In this assignment you will implement a multi-user monolith Jakarta EE web application where each user can manage their own data.
+The data be the same entity class from your assignment 3 or a new entity class that meets the minimum requirements for an entity class as specified in assignment 3.
+
+You can use one of the following databases for this assignment:
+
+* Oracle
+* SQL Server
+* H2 database file
+* Postgresql
+* Mysql
+* MariaDB
+
+You application must support different permissions for two different roles.
+
+== Windows Server VM Setup
+The password for the user accounts in the Windows Server VM in the Departments organization unit is incorrectly set to `Passsword2015` (three s instead of two s). Login to the Windows Server VM using the *Password2015* for the password and open a *Windows PowerShell (Admin)* and paste in the following commands to change the passwords for all accounts in the Departments organization unit to `Password2015`.
+
+[source, console]
+----
+Get-ADUser -filter * | Where {$_.DistinguishedName -like "*OU=Departments*"} | ForEach-Object -Process {Set-ADAccountPassword -Identity $_.Name -Reset -NewPassword (ConvertTo-SecureString -AsPlainText "Password2015" -Force)}
+----
+
+To see a list of accounts on the server, open the *Active Directory Users and Computers* app and navigate to "dmit2015.ca | Departments". You can then select a department name (i.e. Sales) to see a list of accounts in the department.
+
+== GIT REPOSITORY AND PROJECT SETUP
+. Login to Moodle and navigate to the link to create a private github repository for this assignment.
+. Click on *Accept this assignment* to allow github to create a private github repository for you.
+. Wait for the *You are ready to go!* messaage then click on the link to navigate to your assignment repository
+. Click on *Clone or download* button then copy the URL to your repository to the clipboard.
+. There are not files in this git respository as you will be pushing your assignment 4 project to this repository.
+. On your VM, create the folder `~/git/dmit2015-1231-assignment05`.
+
+
+== PROJECT SETUP
+. Open IntelliJ IDEA and create a new project using the *Jakarta EE* module and change following settings:
+ .. Name: `dmit2015-assignment05-yourname`
+ .. Location: `~/IdeaProjects/dmit2015-1231-assignment05`
+ .. Template: `Web application`
+ .. Application server: `<No appliation server>`  
+ .. Group: `dmit2015`
+ .. Artifact: `assignment05-yourname`
+. Click *Next*
+. Change the Version select menu to *Jakarta EE 10* and select the following specifications:
+ .. Web Profile (10.0.0)
+  Click *Create*
+
+. Make the following changes to `pom.xml`
+* Change the element value for both `maven.compiler.target` and `maven.compiler.source` to `*17*`.
+* Change the element value for `junit.version` to `*5.9.3*`.
+
+poml.xml
+[source, xml]
+----
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.30</version>
+    <scope>provided</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>6.3.1.Final</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-spatial</artifactId>
+    <version>6.3.1.Final</version>
+</dependency>
+
+<dependency>
+    <groupId>com.oracle.database.jdbc</groupId>
+    <artifactId>ojdbc11</artifactId>
+    <version>23.2.0.0</version>
+</dependency>
+
+<dependency>
+    <groupId>com.microsoft.sqlserver</groupId>
+    <artifactId>mssql-jdbc</artifactId>
+    <version>12.4.1.jre11</version>
+</dependency>
+
+ <dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <version>2.2.224</version>
+</dependency>
+
+<dependency>
+    <groupId>jakarta.faces</groupId>
+    <artifactId>jakarta.faces-api</artifactId>
+    <version>4.0.1</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces</artifactId>
+    <version>13.0.2</version>
+    <classifier>jakarta</classifier>
+</dependency>
+<dependency>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>primeflex</artifactId>
+    <version>3.3.1</version>
+</dependency>
+<dependency>
+    <groupId>org.omnifaces</groupId>
+    <artifactId>omnifaces</artifactId>
+    <version>4.3</version>
+</dependency>
+
+<!-- Arquillian is for performing Integration Testing -->
+<dependency>
+    <groupId>org.eclipse</groupId>
+    <artifactId>yasson</artifactId>
+    <version>3.0.3</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.jboss.shrinkwrap.resolver</groupId>
+    <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+    <version>3.2.1</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.jboss.arquillian.junit5</groupId>
+    <artifactId>arquillian-junit5-container</artifactId>
+    <version>1.7.1.Final</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.jboss.arquillian.protocol</groupId>
+    <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
+    <version>1.7.1.Final</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.wildfly.arquillian</groupId>
+    <artifactId>wildfly-arquillian-container-managed</artifactId>
+    <version>5.0.1.Final</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version>2.0.9</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-simple</artifactId>
+    <version>2.0.9</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.21.0</version>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-params</artifactId>
+    <version>${junit.version}</version>
+    <scope>test</scope>
+</dependency>
+
+ <!-- AssertJ is for unit testing with Fluent Assertions -->
+<dependency>
+    <groupId>org.assertj</groupId>
+    <artifactId>assertj-core</artifactId>
+    <version>3.24.2</version>
+    <scope>test</scope>
+</dependency>
+
+
+<!-- Dependency for Functional UI testing using Selenium WebDriver -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.14.1</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>io.github.bonigarcia</groupId>
+    <artifactId>webdrivermanager</artifactId>
+    <version>5.5.3</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>io.github.bonigarcia</groupId>
+    <artifactId>selenium-jupiter</artifactId>
+    <version>4.3.7</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- For PrimeFaces DataExporter PDF and Excel -->
+<dependency>
+    <groupId>com.github.librepdf</groupId>
+    <artifactId>openpdf</artifactId>
+    <version>1.3.30</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>5.2.4</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.2.4</version>
+</dependency>
+
+----
+
+* Add the following dependencies to the `<plugins>` element.
+
+poml.xml
+[source, xml]
+----
+<!-- Plugin to build a bootable JAR for WildFly -->
+<plugin>
+    <!-- https://docs.wildfly.org/bootablejar/#wildfly_jar_dev_mode -->
+    <!-- mvn wildfly-jar:dev-watch -->
+    <groupId>org.wildfly.plugins</groupId>
+    <artifactId>wildfly-jar-maven-plugin</artifactId>
+    <version>10.0.0.Final</version>
+    <configuration>
+        <feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)#29.0.1.Final</feature-pack-location>
+        <layers>
+            <!-- https://docs.wildfly.org/29/Bootable_Guide.html#wildfly_layers -->
+            <layer>cloud-server</layer> <!-- includes ee-security -->
+            <layer>jsf</layer>
+        </layers>
+        <excluded-layers>
+            <layer>deployment-scanner</layer>
+        </excluded-layers>
+        <plugin-options>
+            <jboss-fork-embedded>true</jboss-fork-embedded>
+        </plugin-options>
+        <!-- https://docs.wildfly.org/bootablejar/#wildfly_jar_enabling_debug -->
+        <jvmArguments>
+            <!-- https://www.jetbrains.com/help/idea/attaching-to-local-process.html#attach-to-local -->
+            <!-- To attach a debugger to the running server from IntelliJ IDEA
+                1. From the main menu, choose `Run | Attach to Process`
+                2. IntelliJ IDEA will show the list of running local processes. Select the process with the `xxx-bootable.jar` name to attach to.
+            -->
+            <arg>-agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n</arg>
+        </jvmArguments>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>package</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+<!-- Plugin to run unit tests-->
+<!-- mvn test -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.2.1</version>
+</plugin>
+
+<!-- Plugin to run functional tests -->
+<!--  mvn failsafe:integration-test -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-failsafe-plugin</artifactId>
+    <version>3.2.1</version>
+</plugin>
+
+----
+
+
+== REQUIREMENTS
+. Open `pom.xml` and configure the *wildfly-jar-maven-plugin* to add a layer to use HTTPS/SSL and cli script files to enable one-way HTTPS and the Elytron subsystem for Jakarta EE Security.
+
+. Configure the application to force the use HTTPS/SSL for all URLs in the application.
+
+. Configure the application to use either a LDAP identity store to the Windows 2022 Server VM or an Database identity store.
+
+. Configure the application to use a Custom Form Authentication mechanism.
+
+. Modify the Jakarta Faces layout file `/src/main/webapp/WEB-INF/faces-templates/layout.xhml` with a link to login if the uesr has not logged in and a link to logout if the user has logged in.
+
+. Configure the application so that any authenticated user user can only manage their own data. For example each authenticated user can manage their own collection of `OscarReview` entity.
+
+. Make up a security rule for another role in your application that has a different set of permissions.
+For example, you could add a restriction that authentication users in the role *Executive* can view and delete data from any users but cannot edit data for another user.
+   
+. Configure the application to display custom error pages for error codes 403, 404, and 500.
+
+. Write an functional UI test using WebDriver to automate the process to login, create a set data using data from a csv file then close the browser.
+
+. Test your application to check if the security requirements have been met.
+
+. Open *persistence.xml* change the property `jakarta.persistence.schema-generation.database.action` value from `drop-and-create` to `none` to avoid losing all your data each time your application starts.
+
+== CODING REQUIREMENTS
+* Java package names must be all lower case (*10%* deduction if you do not follow this requirement)
+* Use camelCase for Java variables and method names (*10%* deduction if you do not follow this requirement)
+* Use TitleCase for Java class names (*10%* deduction if you do not follow this requirement)
+* All Java source files must include javadoc comments before the class with a description of the class, `@author` with your full name, and `@version` with the last date modifed. (*10%* deduction if you do not follow this requirement)
+* You *MUST* demo your assigment in person to your instructor (*100%* deduction if you do not demo in person)
+
+
+== MARKING GUIDE
+
+[cols="4,1"]
+|===
+| Demonstration Requirement | Marks
+
+| Demonstrate using a web browser that you have configured Wildfly to use a self-signed SSL certificate that you generated using the `keytool` command.
+| 1
+
+| Demonstrate using a web browser that all URLs in your web application are transported over HTTPS/SSL.
+| 1
+
+| Demonstrate using a web browser successful login to your web application using two different LDAP/Database accounts.
+| 1
+
+| Demonstrate using a web browser that your web application can restrict the number of login attempts using a configurable max login attempts value.
+| 1
+
+| Demonstrate using a web browser url protection by clicking on a url that requires authentication before you can access it.
+| 1
+
+| Demonstrate using a web browser method-level protection against anonymous users that an access denied message is shown when a link/button is clicked. It is up to you to determine which urls are not accessible by anonymous users.
+| 1
+
+| Demonstrate using a web browser method-level RBAC protection for authenticated users that an access denied message is shown a link/button is clicked. It is up to you to determine which role can access which resource.
+| 1
+
+| Demonstrate using a web browser that authenticated user can only manage their own data.
+| 1
+
+| Demonstrate that the server returns custom error page for HTTP status 404 and 500, respectively. 
+To demonstrate a 404 status code error, change the URL to a file that does not exist. 
+To demonstrate a 500 status code error, modify either the `init` method or an action method of a Faces backing bean class that on purpose throws an Exception. 
+If you using a `<p:commandButton>` to invoke an excpetion, make sure to set the `ajax` attribute to `false`.
+| 1
+
+| Demonstrate an Functional UI Test to automate the process to login, create a set of data using data from a csv file, logout, and close the browser.
+| 1
+
+|===
+
+
+== SUBMISSION/DEMONSTRATION REQUIREMENTS
+* Commit and push your project to your git repository before the due date.
+* Demonstrate in person or upload a video of the demonstration requirements on or before the due date.
+
+== Resources
+* https://eclipse-ee4j.github.io/jakartaee-tutorial/#security-2[Security in the Jakarta EE Platform]
+* https://javaee.github.io/tutorial/interceptors.html#GKEED[Using Jakarta EE Interceptors]
+* https://jakarta.ee/specifications/interceptors/2.1/jakarta-interceptors-spec-2.1.html[Jakarta Interceptor Specification]
