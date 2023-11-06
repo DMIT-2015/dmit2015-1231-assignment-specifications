@@ -23,6 +23,21 @@ The *Finance* role is allowed to create, edit/update, and view their own Bill an
 The *Accounting* role is allowed view Bill and BillPayment for all users and can delete Bill and BillPayment.
 The *Executive* role is allowed to view Bill and BillPayment for all users.
 
+=== Undertow cannot connect to backend HTTPS server when acting as a proxy 
+
+After your configure your app to use HTTPS/SSL with Wildfly you may see the error *XNIO000011: Task io.undertow.protocols.ssl.SslConduit$5$1@6a6e313e failed with an exception: java.lang.NullPointerException* [https://access.redhat.com/solutions/5675351] in the Run window of IntelliJ.
+To resolve this issue you and edit the java.security file (`sudo gedit $JAVA_HOME/conf/security/java.security`)
+and add the following entry to the end of file
+
+[source,java]
+----
+jdk.tls.disabledAlgorithms=SSLv3, TLSv1, TLSv1.1, RC4, DES, MD5withRSA, \
+DH keySize < 1024, EC keySize < 224, 3DES_EDE_CBC, anon, NULL, \
+include jdk.disabled.namedCurves, RSASSA-PSS
+
+----
+
+
 == GIT REPOSITORY SETUP
 . Login to Moodle and navigate to the link to create a private github repository for this assignment.
 . Click on *Accept this assignment* to allow github to create a private github repository for you.
@@ -36,6 +51,7 @@ The *Executive* role is allowed to view Bill and BillPayment for all users.
 . Navigate to the `src/main/java/dmit2015/config` folder and open `ApplicationConfig.java` and change the `@DataSourceDefinition` 
 to an SQL Server, Oracle, H2 file database.
 . Open a browser and verify that the pages for List Bill and Create Bill are still fully functional.
+
 
 == REQUIREMENTS
 . Configure the *wildfly-jar-maven-plugin* in `pom.xml` to:
@@ -100,7 +116,7 @@ Executive
 
 . Configure the project (`ApplicationConfig.java`, `OidcConfig.java`, `OidcLogout.java`) to use OpenIDConnect Authentication mechanism.
 
-. Configure the project (`ApplicationConfig.java`) to use a LDAP identity store to the Windows 2019 Server VM.
+. Configure the project (`ApplicationConfig.java`) to use a LDAP identity store to the Windows 2022 Server VM.
 
 . Modify the Faces layout file `/src/main/webapp/WEB-INF/faces-templates/layout.xhml` with a link to login and a link logout.
 
@@ -121,8 +137,8 @@ directly to set the `username` of the BillPayment before it is persisted.
 
 . Modify `BillPaymentRepository.java` method `findAll()` to work as follows:
 .. If the caller is anonymous (non-authenticated) user then throw an `RuntimeException`.
-.. If the caller is the role *Finance* then return a list of Bill entity filter by the username of the caller.
-.. If the caller is the role *Accounting* or *Executive* then return a list of a BillPayment entity.
+.. If the caller is the role *Finance* then return a list of BillPayment entity filter by the username of the caller.
+.. If the caller is the role *Accounting* or *Executive* then return all BillPayment entity.
 .. If the caller is not in the role *Finance* or *Accounting* or *Executive* then return a empty list.
 
 . Using a CDI Interceptor restrict access to the methods `create()` and `update()` to the role *Finance* in `BillRepository.java`.
