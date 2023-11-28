@@ -267,7 +267,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 	@DataSourceDefinition(
 		name="java:app/datasources/mssqlDS",
 		className="com.microsoft.sqlserver.jdbc.SQLServerDataSource",
-		url="jdbc:sqlserver://localhost;databaseName=DMIT2015CourseCourseDB;TrustServerCertificate=true",
+		url="jdbc:sqlserver://localhost;databaseName=DMIT2015CourseDB;TrustServerCertificate=true",
 		user="user2015",
 		password="Password2015"),
 
